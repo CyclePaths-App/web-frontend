@@ -21,9 +21,9 @@ function HeatmapLayer({ points }: { points: any[] }) {
 
     // Convert points into [lat, lng, intensity]
     const heatPoints: [number, number, number][] = points.map((p: any) => [
-  p.latitude,
-  p.longitude,
-  1 // intensity (optional, can adjust)
+     p.latitude,
+     p.longitude,
+     p.intensity ?? 1 // intensity (optional, can adjust)
 ]);
     // Add heat layer to map
     const heatLayer = L.heatLayer(heatPoints, {
