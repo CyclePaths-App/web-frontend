@@ -1,3 +1,5 @@
+import axios from "axios";
+
 /**
  * getPoints(): Gets points in the specified window for display on the heatmap. If you want to specify a trip type, set the `trip` 
  * field in the options object to either `"bike"` or `"walk"`. If you want to only get the destinations, set the `justDestinations` field in the options object to
@@ -18,7 +20,7 @@ export async function getPoints(
   westLongitude: number, 
   options?:WindowOptions
 ): Promise<Point[] | null> {
-    const BASE_URL = `http://localhost:3000/points/${northLatitude}/${southLatitude}/${eastLongitude}/${westLongitude}`;
+    const BASE_URL = `http://localhost:8000/points/${northLatitude}/${southLatitude}/${eastLongitude}/${westLongitude}`;
     let url = BASE_URL;
 
     if(options){
@@ -31,14 +33,14 @@ export async function getPoints(
       }
     }
 
-    return fetch(url).then((res)=>{
-      const result: unknown = res.body
+    return axios.get(url).then((res)=>{
+      const result: unknown = res.data
       switch(res.status){
         case 200: {
           return result as Point[];
         }
         case 400: {
-          alert(`Incorrect Arguments: ${res.text}`);
+          alert(`Incorrect Arguments: ${res.data}`);
           return null;
         }
         case 403: {
@@ -53,7 +55,7 @@ export async function getPoints(
           return null;
         }
         default: {
-          alert(`Unknown error: ${res.status}: ${res.text}`);
+          alert(`Unknown error: ${res.status}: ${res.data}`);
           return null;
         }
       }

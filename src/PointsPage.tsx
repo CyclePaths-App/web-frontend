@@ -47,9 +47,14 @@ export default function PointsPage() {
   const [uploaded, setUploaded] = useState(false);
 
   useEffect(() => {
-    getPoints()
+    getPoints(42.71, 42.62, 73.65, -73.87)
       .then((data) => {
-        setPoints(data);
+        if (data !=  null){
+          setPoints(data);
+        } else {
+          alert("its null fucko")
+        }
+        
       })
       .catch((error) => {
         console.error("Error fetching points:", error);
