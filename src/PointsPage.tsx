@@ -52,7 +52,7 @@ export default function PointsPage() {
         if (data !=  null){
           setPoints(data);
         } else {
-          alert("its null fucko")
+          alert("its null.")
         }
         
       })
