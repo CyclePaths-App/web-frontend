@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -6,25 +6,27 @@ import "leaflet.heat";
 import { getPoints } from "./api/points";
 
 // Type for a point
-interface Point {
-  latitude: number;
-  longitude: number;
-  intensity?: number; // optional
-}
+// interface Point {
+//   latitude: number;
+//   longitude: number;
+//   intensity?: number; // optional
+// }
 
 // Component to add heat layer after map loads
 function HeatmapLayer({ points }: { points: any[] }) {
   const map = useMap();
 
   useEffect(() => {
-    if (!map || points.length === 0) return;
+    if (!map || points == null || points.length === 0) return;
+
+    console.log(points)
 
     // Convert points into [lat, lng, intensity]
     const heatPoints: [number, number, number][] = points.map((p: any) => [
-     p.latitude,
-     p.longitude,
-     p.intensity ?? 1 // intensity (optional, can adjust)
-]);
+      p.latitude,
+      p.longitude,
+      p.intensity ?? 1 // intensity (optional, can adjust)
+    ]);
     // Add heat layer to map
     const heatLayer = L.heatLayer(heatPoints, {
       radius: 15,

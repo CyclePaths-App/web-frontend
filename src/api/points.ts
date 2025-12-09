@@ -1,4 +1,6 @@
 import axios from "axios";
+import { BACKEND_URL, DEV } from "../constants";
+
 
 /**
  * getPoints(): Gets points in the specified window for display on the heatmap. If you want to specify a trip type, set the `trip` 
@@ -20,8 +22,10 @@ export async function getPoints(
   westLongitude: number, 
   options?:WindowOptions
 ): Promise<Point[] | null> {
-    const BASE_URL = `http://localhost:8000/points/${northLatitude}/${southLatitude}/${eastLongitude}/${westLongitude}`;
+    const BASE_URL = `${BACKEND_URL}points/${northLatitude}/${southLatitude}/${eastLongitude}/${westLongitude}`;
     let url = BASE_URL;
+    // console.log(BASE_URL)
+    // console.log('https://overexpressive-kynlee-nonhedonic.ngrok-free.dev/points/50/40/-80/-71')
 
     if(options){
       url += '?'; // Allows optional arguments.
@@ -33,7 +37,7 @@ export async function getPoints(
       }
     }
 
-    return axios.get(url).then((res)=>{
+    return await axios.get(BASE_URL,{headers: {'grok-skip-browser-warning': true}}).then((res)=>{
       const result: unknown = res.data
       switch(res.status){
         case 200: {
@@ -44,6 +48,7 @@ export async function getPoints(
           return null;
         }
         case 403: {
+          alert(`Not enough users in this area to be deidentifiable`)
           return null;
         }
         case 404: {
