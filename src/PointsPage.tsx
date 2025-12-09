@@ -27,7 +27,7 @@ function HeatmapLayer({ points }: { points: any[] }) {
 ]);
     // Add heat layer to map
     const heatLayer = L.heatLayer(heatPoints, {
-      radius: 25,
+      radius: 15,
       blur: 15,
       maxZoom: 17,
     }).addTo(map);
@@ -47,12 +47,12 @@ export default function PointsPage() {
   const [uploaded, setUploaded] = useState(false);
 
   useEffect(() => {
-    getPoints(42.71, 42.62, 73.65, -73.87)
+    getPoints(43, 42, -74, -73)
       .then((data) => {
         if (data !=  null){
           setPoints(data);
         } else {
-          alert("its null.")
+          alert("Not enough users in this area to be deidentifiable.")
         }
         
       })
