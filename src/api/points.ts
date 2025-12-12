@@ -37,7 +37,7 @@ export async function getPoints(
       }
     }
 
-    return await axios.get(BASE_URL,{headers: {'grok-skip-browser-warning': true}}).then((res)=>{
+    return await axios.get(BASE_URL,{headers: {'grok-skip-browser-warning': true,}}).then((res)=>{
       const result: unknown = res.data
       switch(res.status){
         case 200: {
