@@ -1,1 +1,1 @@
-podman build . -t CyclePaths-Web
+podman build . -t cyclepaths-web

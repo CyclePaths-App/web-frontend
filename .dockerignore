@@ -1,10 +1,21 @@
+# Dependencies
 node_modules
-DockerFile
+dist
+
+# Scrips
+scrips
+
+# Ignore files
+Dockerfile
 .dockerignore
 .git
+
+# Config Files
 .gitignore
 .env
 .prettierrc
 eslint.config.js
-LICENSE
+
+# READMEs
 README.md 
+CONTRIBUTING.md
