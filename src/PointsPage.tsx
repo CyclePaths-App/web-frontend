@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet.heat";
-import { getPoints } from "./api/points";
+import { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.heat';
+import { getPoints } from './api/points';
 
 // Type for a point
 // interface Point {
@@ -19,18 +19,18 @@ function HeatmapLayer({ points }: { points: any[] }) {
   useEffect(() => {
     if (!map || points == null || points.length === 0) return;
 
-    console.log(points)
+    console.log(points);
 
     // Convert points into [lat, lng, intensity]
     const heatPoints: [number, number, number][] = points.map((p: any) => [
       p.latitude,
       p.longitude,
-      p.intensity ?? 1 // intensity (optional, can adjust)
+      p.intensity ?? 1, // intensity (optional, can adjust)
     ]);
     // Add heat layer to map
     const heatLayer = L.heatLayer(heatPoints, {
-      radius: 15,
-      blur: 15,
+      radius: 10,
+      blur: 5,
       maxZoom: 17,
     }).addTo(map);
 
@@ -51,54 +51,55 @@ export default function PointsPage() {
   useEffect(() => {
     getPoints(43, 42, -74, -73)
       .then((data) => {
-        if (data !=  null){
+        if (data != null) {
           setPoints(data);
         } else {
-          alert("Not enough users in this area to be deidentifiable.")
+          alert('Not enough users in this area to be deidentifiable.');
         }
-        
       })
       .catch((error) => {
-        console.error("Error fetching points:", error);
+        console.error('Error fetching points:', error);
       })
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
-    return <p style={{ textAlign: "center", marginTop: "2rem" }}>Loading map...</p>;
+    return (
+      <p style={{ textAlign: 'center', marginTop: '2rem' }}>Loading map...</p>
+    );
   }
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
-        <h2 style={{ textAlign: "center" }}>📍 Points Heatmap Viewer</h2>
-       { }
-        <div style={{ textAlign: "center", marginBottom: "10px" }}>
-            <input
-                type="file"
-                accept=".json"
-                onChange={(e) => {
-                    const file = e.target.files?.[0]; // get the first uploaded file
-                    if (!file) return;
-                    const reader = new FileReader();
-                    reader.onload = (event: ProgressEvent<FileReader>) => {
-                    try {
-                        const data = JSON.parse(event.target?.result as string);
-                        setPoints(data);
-                        setUploaded(true);
-                        console.log("Uploaded points:", data);
-                    } catch {
-                        alert("Invalid JSON file");
-                    }
-                };
-                reader.readAsText(file);
-             }}
-            />
-            {uploaded && <p> JSON points loaded successfully</p>}
-        </div>
+    <div style={{ height: '100vh', width: '100vw' }}>
+      <h2 style={{ textAlign: 'center' }}>📍 Points Heatmap Viewer</h2>
+      {}
+      <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+        <input
+          type="file"
+          accept=".json"
+          onChange={(e) => {
+            const file = e.target.files?.[0]; // get the first uploaded file
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event: ProgressEvent<FileReader>) => {
+              try {
+                const data = JSON.parse(event.target?.result as string);
+                setPoints(data);
+                setUploaded(true);
+                console.log('Uploaded points:', data);
+              } catch {
+                alert('Invalid JSON file');
+              }
+            };
+            reader.readAsText(file);
+          }}
+        />
+        {uploaded && <p> JSON points loaded successfully</p>}
+      </div>
       <MapContainer
         center={[42.6526, -73.7562]} // Default: Albany, NY
         zoom={13}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
